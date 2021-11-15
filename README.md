@@ -2,7 +2,7 @@
 
 This library provides for different implementations of 2D raycasting for 2D occupancy grids, including the Compressed Directional Distance Transform (CDDT) algorithm as proposed in [this publication](http://arxiv.org/abs/1705.01167). The code is written and optimized in C++, and Python wrappers are also provided.
 
-WARNING: this is currently in a slightly weird state in preparation for 6.141 lab 5. I will try to fix up all the compile flags to work with both use cases soon.
+<!-- WARNING: this is currently in a slightly weird state in preparation for 6.141 lab 5. I will try to fix up all the compile flags to work with both use cases soon. -->
 
 ## Building the Code
 
@@ -39,6 +39,8 @@ Then use cmake3.6 instead of cmake in the above instructions for building the ra
 ### Python Wrappers
 
 To build the code and its associated Python wrappers for use in Python code, do the following. You may have to install Cython if you do not already have it on your system.
+
+Another dependency for building the python wrapper is [transforms3d](https://matthew-brett.github.io/transforms3d/) which replace tf.transformations in ROS 1.
 
 ```
 # clone the repository
