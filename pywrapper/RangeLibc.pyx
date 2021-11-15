@@ -7,10 +7,8 @@ from cython.operator cimport dereference as deref
 
 USE_ROS_MAP = True
 if USE_ROS_MAP:
-    # from nav_msgs.msg import OccupancyGrid
-    # import tf.transformations
     from nav2_msgs.msg import Costmap
-    # TODO: import tf.transformations ros2 equivalent
+    import transforms3d
 
 cdef extern from "includes/RangeLib.h":
     # define flags
@@ -121,13 +119,18 @@ PyOMap: wraps OMap class
 
 '''
 
+# def quaternion_to_angle(q):
+#     """Convert a quaternion _message_ into an angle in radians.
+#     The angle represents the yaw.
+#     This is not just the z component of the quaternion."""
+#     x, y, z, w = q.x, q.y, q.z, q.w
+#     roll, pitch, yaw = tf.transformations.euler_from_quaternion((x, y, z, w))
+#     return yaw
+
 def quaternion_to_angle(q):
-    """Convert a quaternion _message_ into an angle in radians.
-    The angle represents the yaw.
-    This is not just the z component of the quaternion."""
     x, y, z, w = q.x, q.y, q.z, q.w
-    roll, pitch, yaw = tf.transformations.euler_from_quaternion((x, y, z, w))
-    return yaw
+    ai, aj, ak = transforms3d.euler.quat2euler([w, x, y,  z], axes='sxyz')
+    return ak
 
 cdef class PyOMap:
     cdef OMap *thisptr      # hold a C++ instance which we're wrapping
