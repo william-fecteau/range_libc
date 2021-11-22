@@ -1,6 +1,6 @@
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import old_build_ext as build_ext
+from Cython.Distutils.old_build_ext import old_build_ext as build_ext
 import numpy, os, platform, sys
 from os.path import join as pjoin
 
