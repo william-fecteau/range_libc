@@ -84,7 +84,7 @@ def locate_cuda():
     for k, v in cudaconfig.items():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
-
+    print('CUDA config: ', cudaconfig)
     return cudaconfig
 
 
