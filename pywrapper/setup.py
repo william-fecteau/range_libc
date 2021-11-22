@@ -1,6 +1,6 @@
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
+from Cython.Distutils import old_build_ext as build_ext
 import numpy, os, platform, sys
 from os.path import join as pjoin
 
@@ -81,7 +81,7 @@ def locate_cuda():
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include'),
                   'lib64': pjoin(home, 'lib64')}
-    for k, v in cudaconfig.iteritems():
+    for k, v in cudaconfig.items():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
@@ -105,6 +105,10 @@ if use_cuda:
     compiler_flags.append("-DUSE_CUDA=1");        nvcc_flags.append("-DUSE_CUDA=1")
     compiler_flags.append("-DCHUNK_SIZE="+CHUNK_SIZE); nvcc_flags.append("-DCHUNK_SIZE="+CHUNK_SIZE)
     compiler_flags.append("-DNUM_THREADS="+NUM_THREADS);   nvcc_flags.append("-DNUM_THREADS="+NUM_THREADS)
+    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
+    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
+    nvcc_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
+    nvcc_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
 
     CUDA = locate_cuda()
     include_dirs.append(CUDA['include'])
@@ -112,6 +116,8 @@ if use_cuda:
 
 if trace:
     compiler_flags.append("-D_MAKE_TRACE_MAP=1")
+    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
+    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
 
 
 ##################################################################
@@ -169,7 +175,8 @@ if use_cuda:
                     libraries=['cudart'],
                     runtime_library_dirs=[CUDA['lib64']],
                     depends=depends,
-                    language="c++",)
+                    language="c++",
+                    compiler_directives={'language_level' : "3"})
     setup(name='range_libc',
         author='Corey Walsh',
         version='0.1',
@@ -183,7 +190,8 @@ else:
                 extra_link_args = ["-std=c++11"],
                 include_dirs = include_dirs,
                 depends=["../includes/*.h"],
-                language="c++",)],
+                language="c++",
+                compiler_directives={'language_level' : "3"})],
         name='range_libc',
         author='Corey Walsh',
         version='0.1',
