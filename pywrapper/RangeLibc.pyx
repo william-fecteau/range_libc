@@ -7,7 +7,7 @@ from cython.operator cimport dereference as deref
 
 USE_ROS_MAP = True
 if USE_ROS_MAP:
-    from nav2_msgs.msg import Costmap
+    from nav_msgs import OccupancyGrid
     import transforms3d
 
 cdef extern from "includes/RangeLib.h":
@@ -148,9 +148,9 @@ cdef class PyOMap:
                 for y in xrange(height):
                     for x in xrange(width):
                         self.thisptr.grid[x][y] = <bool>arg1[y,x]
-            elif USE_ROS_MAP and isinstance(arg1, Costmap):
+            elif USE_ROS_MAP and isinstance(arg1, OccupancyGrid):
                 map_msg = arg1
-                width, height = map_msg.metadata.size_x, map_msg.metadata.size_y
+                width, height = map_msg.info.width, map_msg.info.height
                 self.thisptr = new OMap(<int>height,<int>width)
 
                 # 0: permissible, -1: unmapped, 100: blocked
@@ -162,11 +162,11 @@ cdef class PyOMap:
                             self.thisptr.grid[x][y] = True
 
                 # cache constants for coordinate space conversion
-                angle = -1.0*quaternion_to_angle(map_msg.metadata.origin.orientation)
-                self.thisptr.world_scale = map_msg.metadata.resolution
+                angle = -1.0*quaternion_to_angle(map_msg.info.origin.orientation)
+                self.thisptr.world_scale = map_msg.info.resolution
                 self.thisptr.world_angle = angle
-                self.thisptr.world_origin_x = map_msg.metadata.origin.position.x
-                self.thisptr.world_origin_y = map_msg.metadata.origin.position.y
+                self.thisptr.world_origin_x = map_msg.info.origin.position.x
+                self.thisptr.world_origin_y = map_msg.info.origin.position.y
                 self.thisptr.world_sin_angle = np.sin(angle)
                 self.thisptr.world_cos_angle = np.cos(angle)
                 set_trans_params = True
