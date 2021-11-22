@@ -1,5 +1,5 @@
 # making sure gcc 8 is installed
-sudo apt install -y gcc-8 g++-8
+sudo apt update && install -y gcc-8 g++-8
 
 # update alternatives
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
