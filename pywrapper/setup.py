@@ -175,8 +175,7 @@ if use_cuda:
                     libraries=['cudart'],
                     runtime_library_dirs=[CUDA['lib64']],
                     depends=depends,
-                    language="c++",
-                    compiler_directives={'language_level' : "3"})
+                    language="c++",)
     setup(name='range_libc',
         author='Corey Walsh',
         version='0.1',
@@ -190,8 +189,7 @@ else:
                 extra_link_args = ["-std=c++11"],
                 include_dirs = include_dirs,
                 depends=["../includes/*.h"],
-                language="c++",
-                compiler_directives={'language_level' : "3"})],
+                language="c++",)],
         name='range_libc',
         author='Corey Walsh',
         version='0.1',

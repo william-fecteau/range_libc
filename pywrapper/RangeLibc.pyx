@@ -1,3 +1,4 @@
+#cython: language_level=3
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
@@ -7,7 +8,7 @@ from cython.operator cimport dereference as deref
 
 USE_ROS_MAP = True
 if USE_ROS_MAP:
-    from nav_msgs import OccupancyGrid
+    from nav_msgs.msg import OccupancyGrid
     import transforms3d
 
 cdef extern from "includes/RangeLib.h":
@@ -173,7 +174,7 @@ cdef class PyOMap:
             else:
                 self.thisptr = new OMap(arg1)
         else:
-            print "Failed to construct PyOMap, check argument types."
+            print("Failed to construct PyOMap, check argument types.")
             self.thisptr = new OMap(1,1)
 
         if not set_trans_params:
@@ -225,7 +226,7 @@ cdef class PyBresenhamsLine:
         self.thisptr.eval_sensor_model(&observation[0],&ranges[0], &outs[0], num_rays, num_particles)
     cpdef void set_sensor_model(self, np.ndarray[double, ndim=2, mode="c"] table):
         if not table.shape[0] == table.shape[1]:
-            print "Sensor model must have equal matrix dimensions, failing!"
+            print("Sensor model must have equal matrix dimensions, failing!")
             return
         self.thisptr.set_sensor_model(&table[0,0], table.shape[0])
 
@@ -251,7 +252,7 @@ cdef class PyRayMarching:
         self.thisptr.eval_sensor_model(&observation[0],&ranges[0], &outs[0], num_rays, num_particles)
     cpdef void set_sensor_model(self, np.ndarray[double, ndim=2, mode="c"] table):
         if not table.shape[0] == table.shape[1]:
-            print "Sensor model must have equal matrix dimensions, failing!"
+            print("Sensor model must have equal matrix dimensions, failing!")
             return
         self.thisptr.set_sensor_model(&table[0,0], table.shape[0])
 
@@ -287,7 +288,7 @@ cdef class PyCDDTCast:
         self.thisptr.eval_sensor_model(&observation[0],&ranges[0], &outs[0], num_rays, num_particles)
     cpdef void set_sensor_model(self, np.ndarray[double, ndim=2, mode="c"] table):
         if not table.shape[0] == table.shape[1]:
-            print "Sensor model must have equal matrix dimensions, failing!"
+            print("Sensor model must have equal matrix dimensions, failing!")
             return
         self.thisptr.set_sensor_model(&table[0,0], table.shape[0])
 
@@ -312,7 +313,7 @@ cdef class PyGiantLUTCast:
         self.thisptr.eval_sensor_model(&observation[0],&ranges[0], &outs[0], num_rays, num_particles)
     cpdef void set_sensor_model(self, np.ndarray[double, ndim=2, mode="c"] table):
         if not table.shape[0] == table.shape[1]:
-            print "Sensor model must have equal matrix dimensions, failing!"
+            print("Sensor model must have equal matrix dimensions, failing!")
             return
         self.thisptr.set_sensor_model(&table[0,0], table.shape[0])
 
@@ -321,7 +322,7 @@ cdef class PyRayMarchingGPU:
     cdef float max_range
     def __cinit__(self, PyOMap Map, float max_range):
         if SHOULD_USE_CUDA == False:
-            print "CANNOT USE RayMarchingGPU - must compile RangeLib with USE_CUDA=1"
+            print("CANNOT USE RayMarchingGPU - must compile RangeLib with USE_CUDA=1")
             return
         self.max_range = max_range
         self.thisptr = new RayMarchingGPU(deref(Map.thisptr), max_range)
@@ -340,7 +341,7 @@ cdef class PyRayMarchingGPU:
         self.thisptr.eval_sensor_model(&observation[0],&ranges[0], &outs[0], num_rays, num_particles)
     cpdef void set_sensor_model(self, np.ndarray[double, ndim=2, mode="c"] table):
         if not table.shape[0] == table.shape[1]:
-            print "Sensor model must have equal matrix dimensions, failing!"
+            print("Sensor model must have equal matrix dimensions, failing!")
             return
         self.thisptr.set_sensor_model(&table[0,0], table.shape[0])
 
