@@ -61,7 +61,7 @@ def locate_cuda():
     """
     # print os.environ
     # first check if the CUDAHOME env variable is in use
-    print(os.listdir('/usr/local/'))
+    print(os.listdir('/usr/local/cuda-10.2/lib64'))
     if os.path.isdir("/usr/local/cuda-10.2"):
         home = "/usr/local/cuda-10.2"
         print('CUDA in: ' + home)
