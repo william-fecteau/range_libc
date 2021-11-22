@@ -61,8 +61,8 @@ def locate_cuda():
     """
     # print os.environ
     # first check if the CUDAHOME env variable is in use
-    if os.path.isdir("/usr/local/cuda-7.5"):
-        home = "/usr/local/cuda-7.5"
+    if os.path.isdir("/usr/local/cuda-10.0"):
+        home = "/usr/local/cuda-10.0"
         nvcc = pjoin(home, 'bin', 'nvcc')
     elif os.path.isdir("/usr/local/cuda"):
         home = "/usr/local/cuda"
