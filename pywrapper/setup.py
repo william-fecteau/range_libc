@@ -108,10 +108,10 @@ if use_cuda:
     compiler_flags.append("-DUSE_CUDA=1");        nvcc_flags.append("-DUSE_CUDA=1")
     compiler_flags.append("-DCHUNK_SIZE="+CHUNK_SIZE); nvcc_flags.append("-DCHUNK_SIZE="+CHUNK_SIZE)
     compiler_flags.append("-DNUM_THREADS="+NUM_THREADS);   nvcc_flags.append("-DNUM_THREADS="+NUM_THREADS)
-    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
-    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
-    nvcc_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
-    nvcc_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
+    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc)")
+    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++)")
+    nvcc_flags.append("-DCMAKE_C_COMPILER=$(which gcc)")
+    nvcc_flags.append("-DCMAKE_CXX_COMPILER=$(which g++)")
 
     CUDA = locate_cuda()
     include_dirs.append(CUDA['include'])
@@ -119,8 +119,8 @@ if use_cuda:
 
 if trace:
     compiler_flags.append("-D_MAKE_TRACE_MAP=1")
-    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc-8)")
-    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++-8)")
+    compiler_flags.append("-DCMAKE_C_COMPILER=$(which gcc)")
+    compiler_flags.append("-DCMAKE_CXX_COMPILER=$(which g++)")
 
 
 ##################################################################
